@@ -11,10 +11,10 @@ public class CraftingListener implements Listener {
 	@EventHandler
 	public void onPlayerClick (PlayerInteractEvent event) {
 		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-			if (event.getClickedBlock().getType() == Material.WORKBENCH) {CraftingGui.openWoodworkGui(event.getPlayer());}
-			if (event.getClickedBlock().getType() == Material.FURNACE) {CraftingGui.openForgeGui(event.getPlayer());}
-			if (event.getClickedBlock().getType() == Material.CAULDRON) {CraftingGui.openOvenGui(event.getPlayer());}
-			if (event.getClickedBlock().getType() == Material.ANVIL) {CraftingGui.openAnvilGui(event.getPlayer());}
+			if (event.getClickedBlock().getType() == Material.WORKBENCH) {event.getPlayer().openInventory(CraftingGui.woodworkGui);}
+			if (event.getClickedBlock().getType() == Material.FURNACE) {event.getPlayer().openInventory(CraftingGui.forgeGui);}
+			if (event.getClickedBlock().getType() == Material.CAULDRON) {event.getPlayer().openInventory(CraftingGui.ovenGui);}
+			if (event.getClickedBlock().getType() == Material.ANVIL) {event.getPlayer().openInventory(CraftingGui.anvilGui);}
 		}
 	}
 
