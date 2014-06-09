@@ -33,6 +33,10 @@ public class CraftingGui implements Listener {
 	public static Inventory plankGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Woodworking Table: Planks");
 	public static Inventory swordGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Swords");
 	public static Inventory axeGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Axes");
+	public static Inventory helmetGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Helmet");
+	public static Inventory plateGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Chestplate");
+	public static Inventory pantsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Leggings");
+	public static Inventory bootsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Boots");
 
 	public static ItemStack Gem_Fire = createItem(Material.GREEN_RECORD,1,"Amber", new ArrayList<String>(Arrays.asList("It seems to have some special proerties")));
 	public static ItemStack Gem_Ice = createItem(Material.GREEN_RECORD,1,"Saphire", new ArrayList<String>(Arrays.asList("It seems to have some special proerties")));
@@ -235,12 +239,12 @@ public class CraftingGui implements Listener {
 					else {item = createItem(Material.WOOD_HOE, 1, "Crafted Staff", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + minDam + "-" + maxDam,"Crafted by: " + player.getDisplayName())));}
 				}
 				else if (inv.getName().equals(swordGui.getName())) {
-					if (gemType != null) {item = createItem(Material.IRON_SWORD, 1, "Crafted Sword", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) minDam/2 + "-" + (int) maxDam/2,"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
-					else {item = createItem(Material.IRON_SWORD, 1, "Crafted Sword", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) minDam/2 + "-" + (int) maxDam/2,"Crafted by: " + player.getDisplayName())));}
+					if (gemType != null) {item = createItem(Material.IRON_SWORD, 1, "Crafted Sword", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) (minDam/2) + "-" + (int) (maxDam/2),"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_SWORD, 1, "Crafted Sword", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) (minDam/2) + "-" + (int) (maxDam/2),"Crafted by: " + player.getDisplayName())));}
 				}
 				else if (inv.getName().equals(axeGui.getName())) {
-					if (gemType != null) {item = createItem(Material.IRON_AXE, 1, "Crafted Axe", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) minDam/2 + "-" + (int) maxDam/2,"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
-					else {item = createItem(Material.IRON_AXE, 1, "Crafted Axe", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) minDam/2 + "-" + (int) maxDam/2,"Crafted by: " + player.getDisplayName())));}
+					if (gemType != null) {item = createItem(Material.IRON_AXE, 1, "Crafted Axe", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) (minDam/2) + "-" + (int) (maxDam/2),"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_AXE, 1, "Crafted Axe", new ArrayList<String>(Arrays.asList("Level: " + level,"Dmg: " + (int) (minDam/2) + "-" + (int) (maxDam/2),"Crafted by: " + player.getDisplayName())));}
 				}
 				inv.setItem(2, item);
 			}
@@ -266,6 +270,68 @@ public class CraftingGui implements Listener {
 				inv.clear(2);
 			}
 		}
+		
+		if (inv.getName().equals(helmetGui.getName()) || inv.getName().equals(plateGui.getName()) || inv.getName().equals(pantsGui.getName()) || inv.getName().equals(bootsGui.getName())) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.IRON_INGOT) {
+				resources = resources + inv.getItem(0).getAmount();
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.IRON_INGOT) {
+				resources = resources + inv.getItem(1).getAmount();
+			}
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GREEN_RECORD) {
+				ItemStack item = inv.getItem(0);
+				if (item.getItemMeta().getDisplayName() == Gem_Fire.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_FIRE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Ice.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_ICE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Crit.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_CRIT;
+				}
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GREEN_RECORD) {
+				ItemStack item = inv.getItem(1);
+				if (item.getItemMeta().getDisplayName() == Gem_Fire.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_FIRE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Ice.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_ICE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Crit.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_CRIT;
+				}
+			}
+			
+			if (resources >= 1) {
+				ItemStack item = null;
+				int level = (int) Math.pow(resources, (1.0/exponent));
+				if (level > 32) {level = 32;}
+				int armour = (int) (6+4*level);
+				if (inv.getName().equals(helmetGui.getName())) {
+					if (gemType != null) {item = createItem(Material.IRON_HELMET, 1, "Crafted Helmet", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour/1.5),"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_HELMET, 1, "Crafted Helmet", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour/1.5),"Crafted by: " + player.getDisplayName())));}
+				}
+				else if (inv.getName().equals(plateGui.getName())) {
+					if (gemType != null) {item = createItem(Material.IRON_CHESTPLATE, 1, "Crafted Chestplate", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour*1.5),"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_CHESTPLATE, 1, "Crafted Chestplate", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour*1.5),"Crafted by: " + player.getDisplayName())));}
+				}
+				else if (inv.getName().equals(pantsGui.getName())) {
+					if (gemType != null) {item = createItem(Material.IRON_LEGGINGS, 1, "Crafted Pants", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + armour,"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_LEGGINGS, 1, "Crafted Pants", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + armour,"Crafted by: " + player.getDisplayName())));}
+				}
+				else if (inv.getName().equals(bootsGui.getName())) {
+					if (gemType != null) {item = createItem(Material.IRON_BOOTS, 1, "Crafted Boots", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour/1.5),"Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+					else {item = createItem(Material.IRON_BOOTS, 1, "Crafted Boots", new ArrayList<String>(Arrays.asList("Level: " + level,"Arm: " + (int) (armour/1.5),"Crafted by: " + player.getDisplayName())));}
+				}
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+		}
+		
+		
         player.updateInventory();
 		
 	}
