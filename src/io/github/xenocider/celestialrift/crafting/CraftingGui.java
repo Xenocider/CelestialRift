@@ -37,6 +37,9 @@ public class CraftingGui implements Listener {
 	public static Inventory plateGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Chestplate");
 	public static Inventory pantsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Leggings");
 	public static Inventory bootsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Boots");
+	public static Inventory ringsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Smelting");
+	public static Inventory ingotsGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Ancient Forge: Ingots");
+
 
 	public static ItemStack Gem_Fire = createItem(Material.GREEN_RECORD,1,"Amber", new ArrayList<String>(Arrays.asList("It seems to have some special proerties")));
 	public static ItemStack Gem_Ice = createItem(Material.GREEN_RECORD,1,"Saphire", new ArrayList<String>(Arrays.asList("It seems to have some special proerties")));
@@ -67,14 +70,14 @@ public class CraftingGui implements Listener {
 	
 	private static void openForgeGui(Player p) {
 		Inventory inv = Bukkit.createInventory(p, 9, "Ancient Forge");
-		createDisplay(Material.IRON_SWORD, 1, inv, 3, "Forge a Sowrd", "Click this to forge a sword");
-		createDisplay(Material.IRON_AXE, 1, inv, 4, "Forge an Axe", "Click this to forge an axe");
-		createDisplay(Material.FURNACE, 1, inv, 5, "Smelt some Ingots", "Click this to smelt some ingots");
-		createDisplay(Material.IRON_HELMET, 1, inv, 4, "Forge a Helmet", "Click this to forge a helmet");
-		createDisplay(Material.IRON_CHESTPLATE, 1, inv, 4, "Forge a Chestplate", "Click this to forge a chestplate");
+		createDisplay(Material.IRON_SWORD, 1, inv, 0, "Forge a Sword", "Click this to forge a sword");
+		createDisplay(Material.IRON_AXE, 1, inv, 1, "Forge an Axe", "Click this to forge an axe");
+		createDisplay(Material.FURNACE, 1, inv, 6, "Smelt some Ingots", "Click this to smelt some ingots");
+		createDisplay(Material.IRON_HELMET, 1, inv, 2, "Forge a Helmet", "Click this to forge a helmet");
+		createDisplay(Material.IRON_CHESTPLATE, 1, inv, 3, "Forge a Chestplate", "Click this to forge a chestplate");
 		createDisplay(Material.IRON_LEGGINGS, 1, inv, 4, "Forge some Leggings", "Click this to forge some leggings");
-		createDisplay(Material.IRON_BOOTS, 1, inv, 4, "Forge some Boots", "Click this to forge some boots");
-		createDisplay(Material.GOLD_NUGGET, 1, inv, 4, "Forge some Rings", "Click this to forge some rings");
+		createDisplay(Material.IRON_BOOTS, 1, inv, 5, "Forge some Boots", "Click this to forge some boots");
+		createDisplay(Material.GOLD_NUGGET, 1, inv, 7, "Forge some Rings", "Click this to forge some rings");
 		p.openInventory(inv);
 	}
 	
@@ -178,6 +181,7 @@ public class CraftingGui implements Listener {
 
 	private void updateCraftGui(final Player player, Inventory inv) {
 		int resources = 0;
+		int resources2 = 0;
 		String gemType = null;
 		
 		
@@ -270,7 +274,80 @@ public class CraftingGui implements Listener {
 				inv.clear(2);
 			}
 		}
+		if (inv.getName().equals(ingotsGui.getName())) {
+			boolean smelt = true;
+			if (smelt) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.IRON_ORE) {
+				resources = resources + inv.getItem(0).getAmount();
+				smelt = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.IRON_ORE) {
+				resources = resources + inv.getItem(1).getAmount();
+				smelt = false;
+			}
+			if (resources >= 4) {
+				ItemStack item;
+				item = createItem(Material.IRON_INGOT, resources/4, "Crafted Iron Ingots", new ArrayList<String>(Arrays.asList("Resource used in crafting","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (smelt) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GOLD_ORE) {
+				resources = resources + inv.getItem(0).getAmount();
+				smelt = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GOLD_ORE) {
+				resources = resources + inv.getItem(1).getAmount();
+				smelt = false;
+			}
+			if (resources >= 4) {
+				ItemStack item;
+				item = createItem(Material.GOLD_INGOT, resources/4, "Crafted Gold Ingots", new ArrayList<String>(Arrays.asList("Resource used in crafting","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (smelt) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.COAL_ORE) {
+				resources = resources + inv.getItem(0).getAmount();
+				smelt = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.COAL_ORE) {
+				resources = resources + inv.getItem(1).getAmount();
+				smelt = false;
+			}
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.QUARTZ_ORE) {
+				resources2 = resources2 + inv.getItem(0).getAmount();
+				smelt = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.QUARTZ_ORE) {
+				resources2 = resources2 + inv.getItem(1).getAmount();
+				smelt = false;
+			}
+			if (resources >= 2 && resources2 >= 2) {
+				ItemStack item;
+				int amount = 0;
+				if (resources/2 <= resources2/2) {
+					amount = resources/2;
+				}
+				else {
+					amount = resources2/2;
+				}
+				item = createItem(Material.BRICK, amount, "Crafted Bronze Ingots", new ArrayList<String>(Arrays.asList("Resource used in crafting","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+		}
 		
+		//Armor crafting
 		if (inv.getName().equals(helmetGui.getName()) || inv.getName().equals(plateGui.getName()) || inv.getName().equals(pantsGui.getName()) || inv.getName().equals(bootsGui.getName())) {
 			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.IRON_INGOT) {
 				resources = resources + inv.getItem(0).getAmount();
@@ -331,6 +408,48 @@ public class CraftingGui implements Listener {
 			}
 		}
 		
+		//Ring crafting
+		if (inv.getName().equals(ringsGui.getName())) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GOLD_INGOT) {
+				resources = resources + inv.getItem(0).getAmount();
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GOLD_INGOT) {
+				resources = resources + inv.getItem(1).getAmount();
+			}
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GREEN_RECORD) {
+				ItemStack item = inv.getItem(0);
+				if (item.getItemMeta().getDisplayName() == Gem_Fire.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_FIRE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Ice.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_ICE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Crit.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_CRIT;
+				}
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GREEN_RECORD) {
+				ItemStack item = inv.getItem(1);
+				if (item.getItemMeta().getDisplayName() == Gem_Fire.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_FIRE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Ice.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_ICE;
+				}
+				else if (item.getItemMeta().getDisplayName() == Gem_Crit.getItemMeta().getDisplayName()) {
+					gemType = GEMTYPE_CRIT;
+				}
+			}
+			if (resources >= 8) {
+				ItemStack item = null;
+				if (gemType != null) {item = createItem(Material.GOLD_NUGGET, 1, "Crafted Ring", new ArrayList<String>(Arrays.asList("Gem: " + gemType,"Crafted by: " + player.getDisplayName())));}
+				else {item = createItem(Material.GOLD_NUGGET, 1, "Crafted Ring", new ArrayList<String>(Arrays.asList("Crafted by: " + player.getDisplayName())));}
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+		}
 		
         player.updateInventory();
 		
@@ -339,6 +458,7 @@ public class CraftingGui implements Listener {
 	private void CraftItem(final Player player, Inventory inv) {
 		
 		int resources = 0;
+		int resources2 = 0;
 		
 		if (inv.getItem(2) != null) { 
 			updateCraftGui(player,inv);
@@ -408,6 +528,103 @@ public class CraftingGui implements Listener {
 				{   
 					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
 				}
+			}
+			
+			if (inv.getName().equals(ringsGui.getName())) {
+				if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GOLD_INGOT) {
+					resources = resources + inv.getItem(0).getAmount();
+				}
+				if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GOLD_INGOT) {
+					resources = resources + inv.getItem(1).getAmount();
+				}
+				int cost = 8;
+				
+				ItemStack extra = new ItemStack(Material.IRON_INGOT,resources - cost);
+				ItemStack item = inv.getItem(2);
+				
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item,extra);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
+			
+			if (inv.getName().equals(ingotsGui.getName()) && inv.getItem(2).getType() == Material.IRON_INGOT) {
+				if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.IRON_ORE) {
+					resources = resources + inv.getItem(0).getAmount();
+				}
+				if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.IRON_ORE) {
+					resources = resources + inv.getItem(1).getAmount();
+				}
+				ItemStack extra = new ItemStack(Material.IRON_ORE,resources - (resources/4)*4);
+				ItemStack item = inv.getItem(2);
+				
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item,extra);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
+			if (inv.getName().equals(ingotsGui.getName()) && inv.getItem(2).getType() == Material.GOLD_INGOT) {
+				if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.GOLD_ORE) {
+					resources = resources + inv.getItem(0).getAmount();
+				}
+				if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.GOLD_ORE) {
+					resources = resources + inv.getItem(1).getAmount();
+				}
+				ItemStack extra = new ItemStack(Material.GOLD_ORE,resources - (resources/4)*4);
+				ItemStack item = inv.getItem(2);
+				
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item,extra);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
+			if (inv.getName().equals(ingotsGui.getName()) && inv.getItem(2).getType() == Material.BRICK) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.COAL_ORE) {
+				resources = resources + inv.getItem(0).getAmount();
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.COAL_ORE) {
+				resources = resources + inv.getItem(1).getAmount();
+			}
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.QUARTZ_ORE) {
+				resources2 = resources2 + inv.getItem(0).getAmount();
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.QUARTZ_ORE) {
+				resources2 = resources2 + inv.getItem(1).getAmount();
+			}
+			if (resources >= 2 && resources2 >= 2) {
+				int amount = 0;
+				if (resources/2 <= resources2/2) {
+					amount = resources/2;
+				}
+				else {
+					amount = resources2/2;
+				}
+				ItemStack extra = new ItemStack(Material.COAL_ORE,resources - (amount*2));
+				ItemStack extra2 = new ItemStack(Material.QUARTZ_ORE,resources2 - (amount*2));
+
+				ItemStack item = inv.getItem(2);
+				
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item,extra,extra2);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
 			}
 			
 			Bukkit.getServer().getScheduler()
