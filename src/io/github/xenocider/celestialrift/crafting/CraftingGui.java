@@ -27,7 +27,7 @@ public class CraftingGui implements Listener {
 	public static Inventory woodworkGui = Bukkit.createInventory(null, 9, "Woodworking Table");
 	public static Inventory forgeGui = Bukkit.createInventory(null, 9, "Ancient Forge");
 	public static Inventory ovenGui = Bukkit.createInventory(null, 9, "Cook's Oven");
-	public static Inventory anvilGui = Bukkit.createInventory(null, 9, "Heavy Anvil");
+	//public static Inventory anvilGui = Bukkit.createInventory(null, 9, "Heavy Anvil");
 	public static Inventory bowGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Woodworking Table: Bow");
 	public static Inventory staffGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Woodworking Table: Staff");
 	public static Inventory plankGui = Bukkit.createInventory(null, InventoryType.FURNACE, "Woodworking Table: Planks");
@@ -274,6 +274,125 @@ public class CraftingGui implements Listener {
 				inv.clear(2);
 			}
 		}
+		if (inv.getName().equals(ovenGui.getName())) {
+			boolean cook = true;
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.RAW_CHICKEN) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.RAW_CHICKEN) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1) {
+				ItemStack item;
+				item = createItem(Material.COOKED_CHICKEN, resources, "Cooked Chicken", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.RAW_BEEF) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.RAW_BEEF) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1) {
+				ItemStack item;
+				item = createItem(Material.COOKED_BEEF, resources, "Cooked Beef", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.RAW_FISH) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.RAW_FISH) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1) {
+				ItemStack item;
+				item = createItem(Material.COOKED_FISH, resources, "Cooked Fish", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.PORK) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.PORK) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1) {
+				ItemStack item;
+				item = createItem(Material.GRILLED_PORK, resources, "Cooked Pork", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.POTATO_ITEM) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.POTATO_ITEM) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1) {
+				ItemStack item;
+				item = createItem(Material.BAKED_POTATO, resources, "Cooked Potato", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+			if (cook) {
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.CARROT_ITEM) {
+				resources = resources + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.CARROT_ITEM) {
+				resources = resources + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.BOWL) {
+				resources2 = resources2 + inv.getItem(0).getAmount();
+				cook = false;
+			}
+			if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.BOWL) {
+				resources2 = resources2 + inv.getItem(1).getAmount();
+				cook = false;
+			}
+			if (resources >= 1 && resources2 >= 1) {
+				ItemStack item;
+				item = createItem(Material.MUSHROOM_SOUP, 1, "Cooked Stew", new ArrayList<String>(Arrays.asList("Some food","Crafted by: " + player.getDisplayName())));
+				inv.setItem(2, item);
+			}
+			else {
+				inv.clear(2);
+			}
+			}
+		}
 		if (inv.getName().equals(ingotsGui.getName())) {
 			boolean smelt = true;
 			if (smelt) {
@@ -505,6 +624,50 @@ public class CraftingGui implements Listener {
 					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
 				}
 			}
+			
+			if (inv.getName().equals(ovenGui.getName()) && !inv.getItem(2).getType().equals(Material.MUSHROOM_SOUP)) {
+				if (inv.getItem(0) != null && (inv.getItem(0).getType() == Material.RAW_BEEF || inv.getItem(0).getType() == Material.RAW_CHICKEN || inv.getItem(0).getType() == Material.RAW_FISH || inv.getItem(0).getType() == Material.PORK || inv.getItem(0).getType() == Material.POTATO_ITEM)) {
+					resources = resources + inv.getItem(0).getAmount();
+				}
+				if (inv.getItem(1) != null && (inv.getItem(1).getType() == Material.RAW_BEEF || inv.getItem(1).getType() == Material.RAW_CHICKEN || inv.getItem(1).getType() == Material.RAW_FISH || inv.getItem(1).getType() == Material.PORK || inv.getItem(1).getType() == Material.POTATO_ITEM)) {
+					resources = resources + inv.getItem(1).getAmount();
+				}
+				ItemStack item = inv.getItem(2);
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
+			if (inv.getName().equals(ovenGui.getName()) && inv.getItem(2).getType().equals(Material.MUSHROOM_SOUP)) {
+					if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.CARROT_ITEM) {
+						resources = resources + inv.getItem(0).getAmount();
+					}
+					if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.CARROT_ITEM) {
+						resources = resources + inv.getItem(1).getAmount();
+					}
+					if (inv.getItem(0) != null && inv.getItem(0).getType() == Material.BOWL) {
+						resources2 = resources2 + inv.getItem(0).getAmount();
+					}
+					if (inv.getItem(1) != null && inv.getItem(1).getType() == Material.BOWL) {
+						resources2 = resources2 + inv.getItem(1).getAmount();
+					}
+					ItemStack extra = new ItemStack(Material.CARROT_ITEM,resources - 1);
+					ItemStack extra2 = new ItemStack(Material.BOWL,resources2 - 1);
+				ItemStack item = inv.getItem(2);
+				player.closeInventory();
+				
+				//Try to add the items to the player's inventory, or else it will drop the remaining on the ground
+				HashMap<Integer, ItemStack> nope = player.getInventory().addItem(item,extra,extra2);
+				for(Entry<Integer, ItemStack> entry : nope.entrySet())
+				{   
+					player.getWorld().dropItemNaturally(player.getLocation(), entry.getValue());
+				}
+			}
+
 			
 			//Forge weapons
 			if (inv.getName().equals(swordGui.getName()) || inv.getName().equals(axeGui.getName())) {
